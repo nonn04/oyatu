@@ -11,21 +11,42 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       user-select: none;
-      overflow: hidden;
+      overflow-y: auto;
     }
     h1 {
       font-size: 3vw;
-      margin: 10px 0;
+      margin: 10px 0 0 0;
       user-select: text;
+    }
+    #total {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      padding: 10px 20px;
+      background-color: #fff3e0;
+      border: 2px solid #ff9800;
+      border-radius: 12px;
+      font-size: 1.4vw;
+      font-weight: normal;
+      color: #444;
+      margin: 10px 0 15px 0;
+      order: -1;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      min-height: 50px;
+    }
+    #total strong {
+      font-size: 3.2vw;
+      font-weight: bold;
+      color: #e65100;
+      margin-left: 6px;
     }
     #snack-list {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      grid-auto-rows: minmax(140px, auto);
+      grid-auto-rows: minmax(200px, auto);
       width: 100vw;
-      height: 70vh;
+      height: 75vh;
       padding: 10px;
       box-sizing: border-box;
       gap: 15px;
@@ -44,6 +65,8 @@
       user-select: none;
       transition: background-color 0.3s, border 0.3s;
       position: relative;
+      height: 100%;
+      justify-content: space-between;
     }
     .snack.selected {
       background-color: #e6f4d9;
@@ -56,6 +79,7 @@
       width: 70px;
       height: 70px;
       object-fit: contain;
+      margin-top: 10px;
       margin-bottom: 8px;
       user-select: none;
       pointer-events: none;
@@ -63,21 +87,27 @@
     .info {
       font-size: 1.2vw;
       font-weight: bold;
-      margin-bottom: 6px;
+      margin-bottom: 2px;
       text-align: center;
       user-select: text;
+      line-height: 1.2em;
     }
     .calories {
       font-weight: normal;
       font-size: 1vw;
       color: #555;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       user-select: text;
+      min-height: 1.2em;
+      text-align: center;
+      white-space: nowrap;
     }
     .controls {
       display: flex;
       gap: 8px;
       align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
     }
     button {
       font-size: 2vw;
@@ -108,49 +138,68 @@
     .reset-btn:active {
       background-color: #c62828;
     }
-    #total {
-      font-size: 4vw;
+    .size-buttons {
+      margin-top: 4px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      user-select: none;
+    }
+    .size-button {
+      background: #4caf50;
+      border-radius: 8px;
+      padding: 2px 6px;
+      font-size: 1vw;
+      color: white;
+      cursor: pointer;
+      border: 2px solid transparent;
+      min-width: 50px;
+      text-align: center;
+      transition: background-color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .size-button.active {
+      background-color: #ff9800;
+      border-color: #ff5722;
+      color: white;
       font-weight: bold;
-      color: #c0392b;
-      margin: 15px 0;
-      user-select: text;
+      box-shadow: 0 0 5px 2px #ffb74d;
     }
-    #snack-list::-webkit-scrollbar {
-      width: 12px;
-    }
-    #snack-list::-webkit-scrollbar-thumb {
-      background-color: #ccc;
-      border-radius: 10px;
+    @media screen and (max-width: 768px) {
+      h1 { font-size: 5vw; }
+      #total { font-size: 6vw; }
+      #snack-list { grid-template-columns: repeat(3, 1fr); height: 60vh; }
+      button { font-size: 3vw; width: 35px; height: 35px; }
+      .size-button { font-size: 2vw; min-width: 40px; padding: 2px 5px; }
+      .calories { font-size: 1.2vw; }
     }
   </style>
 </head>
 <body>
-
-  <h1> おやつエネルギー計算</h1>
-
+  <div id="total">合計エネルギー：<strong>0 kcal</strong></div>
   <div id="snack-list"></div>
-
-  <div id="total">合計エネルギー：0 kcal</div>
-
   <script>
     const snacks = [
       { id: 1, name: "チョコレート", image: "images/chocolate.png", calories: 30, count: 0, type: "snack" },
       { id: 2, name: "クッキー", image: "images/cookie.png", calories: 60, count: 0, type: "snack" },
       { id: 3, name: "ソーダアイス", image: "images/soda_ice.png", calories: 70, count: 0, type: "snack" },
-      { id: 4, name: "バニラアイス", image: "images/vanilla_ice.png", calories: 380, count: 0, type: "snack" },
+      { id: 4, name: "バニラアイス", image: "images/vanilla_ice.png", calories: 380, count: 0, type: "snack", sizes: { '半分': 190, '小さめ': 170 }, sizeImages: { '半分': 'images/vanilla_ice_half.png', '小さめ': 'images/vanilla_ice_small.png' } },
       { id: 5, name: "あめ", image: "images/candy.png", calories: 10, count: 0, type: "snack" },
-      { id: 6, name: "ポテトチップス", image: "images/potato_chips.png", calories: 340, count: 0, type: "snack" },
+      { id: 6, name: "ポテトチップス", image: "images/potato_chips.png", calories: 340, count: 0, type: "snack", sizes: { '半分': 170, '小さめ': 160 }, sizeImages: { '半分': 'images/potato_chips_half.png', '小さめ': 'images/potato_chips_small.png' } },
       { id: 7, name: "せんべい", image: "images/senbei.png", calories: 40, count: 0, type: "snack" },
       { id: 8, name: "グミ", image: "images/gummy.png", calories: 20, count: 0, type: "snack" },
       { id: 9, name: "ヨーグルト", image: "images/yogurt.png", calories: 50, count: 0, type: "snack" },
       { id: 10, name: "こざかな", image: "images/small_fish.png", calories: 15, count: 0, type: "snack" },
       { id: 11, name: "すいか", image: "images/watermelon.png", calories: 40, count: 0, type: "snack" },
       { id: 12, name: "バナナ", image: "images/banana.png", calories: 80, count: 0, type: "snack" },
-      { id: 13, name: "とうもろこし", image: "images/corn.png", calories: 180, count: 0, type: "snack" },
+      { id: 13, name: "とうもろこし", image: "images/corn.png", calories: 180, count: 0, type: "snack", sizes: { '半分': 90, '1/4こ': 45 }, sizeImages: { '半分': 'images/corn_half.png', '1/4こ': 'images/corn_quarter.png' } },
       { id: 14, name: "おちゃ", image: "images/tea.png", calories: 0, count: 0, type: "drink" },
       { id: 15, name: "ぎゅうにゅう", image: "images/milk.png", calories: 140, count: 0, type: "drink" },
-      { id: 16, name: "ジュース", image: "images/juice.png", calories: 220, count: 0, type: "drink" }
+      { id: 16, name: "ジュース", image: "images/juice.png", calories: 220, count: 0, type: "drink", sizes: { '半分': 110, 'コップ1ぱい': 90 }, sizeImages: { '半分': 'images/juice_half.png', 'コップ1ぱい': 'images/juice_glass.png' } }
     ];
+
+    const selectedSizes = {};
 
     function renderSnacks() {
       const container = document.getElementById("snack-list");
@@ -161,35 +210,66 @@
         div.className = "snack";
         if (snack.type === "drink") div.classList.add("drink");
         if (snack.count > 0) div.classList.add("selected");
+
+        let currentCal = snack.calories;
+        if (selectedSizes[snack.id] && snack.sizes && snack.sizes[selectedSizes[snack.id]] != null) {
+          currentCal = snack.sizes[selectedSizes[snack.id]];
+        }
+
+        let imageSrc = snack.image;
+        if (selectedSizes[snack.id] && snack.sizeImages && snack.sizeImages[selectedSizes[snack.id]]) {
+          imageSrc = snack.sizeImages[selectedSizes[snack.id]];
+        }
+
         div.innerHTML = `
-          <img src="${snack.image}" alt="${snack.name}">
+          <img src="${imageSrc}" alt="${snack.name}">
           <div class="info">${snack.name}</div>
-          <div class="calories">1個 ${snack.calories} kcal</div>
+          <div class="calories">${snack.count > 0 ? snack.count * currentCal : ''} kcal</div>
           <div class="controls">
-            <button aria-label="減らす" onclick="updateCount(${snack.id}, -1)">−</button>
-            <span id="count-${snack.id}" aria-live="polite" style="min-width:24px; text-align:center;">${snack.count}</span>
-            <button aria-label="増やす" onclick="updateCount(${snack.id}, 1)">＋</button>
-            <button class="reset-btn" aria-label="リセット" onclick="resetCount(${snack.id})">×</button>
+            <button onclick="updateCount(${snack.id}, -1)">−</button>
+            <span id="count-${snack.id}" style="min-width:24px; text-align:center;">${snack.count}</span>
+            <button onclick="updateCount(${snack.id}, 1)">＋</button>
+            <button class="reset-btn" onclick="resetCount(${snack.id})">×</button>
           </div>
         `;
+
+        if (snack.sizes) {
+          const sizeDiv = document.createElement("div");
+          sizeDiv.className = "size-buttons";
+          for (const [label, cal] of Object.entries(snack.sizes)) {
+            const btn = document.createElement("div");
+            btn.className = "size-button";
+            btn.textContent = label;
+            if (selectedSizes[snack.id] === label) btn.classList.add("active");
+            btn.addEventListener("click", () => {
+              if (selectedSizes[snack.id] === label) {
+                delete selectedSizes[snack.id];
+              } else {
+                selectedSizes[snack.id] = label;
+              }
+              renderSnacks();
+              calculateTotal();
+            });
+            sizeDiv.appendChild(btn);
+          }
+          div.appendChild(sizeDiv);
+        }
+
         container.appendChild(div);
       });
     }
 
     function updateCount(id, delta) {
       const snack = snacks.find(s => s.id === id);
-
       if (delta > 0) {
-        // 個数1以上の種類数を数える
         const selectedKinds = snacks.filter(s => s.count > 0);
-        // まだ選択されていないスナックを増やそうとした場合、3種類制限をチェック
-        if (snack.count === 0 && selectedKinds.length >= 3) {
-          alert("選択できる種類は3種類までです。");
+        if (snack.count === 0 && selectedKinds.length >= 4) {
+          alert("選択できる種類は4種類までです。");
           return;
         }
       }
-
       snack.count = Math.max(0, snack.count + delta);
+      if (snack.count === 0) delete selectedSizes[id];
       renderSnacks();
       calculateTotal();
     }
@@ -197,6 +277,7 @@
     function resetCount(id) {
       const snack = snacks.find(s => s.id === id);
       snack.count = 0;
+      delete selectedSizes[id];
       renderSnacks();
       calculateTotal();
     }
@@ -204,9 +285,15 @@
     function calculateTotal() {
       let total = 0;
       snacks.forEach(snack => {
-        total += snack.count * snack.calories;
+        if (snack.count > 0) {
+          let cal = snack.calories;
+          if (selectedSizes[snack.id] && snack.sizes && snack.sizes[selectedSizes[snack.id]] != null) {
+            cal = snack.sizes[selectedSizes[snack.id]];
+          }
+          total += snack.count * cal;
+        }
       });
-      document.getElementById("total").innerText = `合計エネルギー：${total} kcal`;
+      document.getElementById("total").innerHTML = `合計エネルギー：<strong>${total} kcal</strong>`;
     }
 
     renderSnacks();
