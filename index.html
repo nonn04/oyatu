@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
@@ -96,7 +96,7 @@
     }
     #snack-list {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr); /* ← ここを5列に変更 */
       gap: 12px;
       padding: 10px 24px 40px;
       max-width: 1024px;
@@ -154,7 +154,7 @@
     .controls button {
       background-color: #8bc34a;
       border: none;
-      border-radius: 50%;
+      border-radius: 4px; /* ← 丸から四角に変更 */
       color: white;
       width: 28px;
       height: 28px;
@@ -163,6 +163,10 @@
       cursor: pointer;
       user-select: none;
       transition: background-color 0.2s;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .controls button:active {
       background-color: #689f38;
@@ -173,13 +177,16 @@
       height: 28px !important;
       font-size: 1.2vw !important;
       line-height: 1 !important;
-      border-radius: 50% !important;
+      border-radius: 4px !important; /* ← 丸から四角に */
       padding: 0 !important;
       color: white !important;
       border: none !important;
       cursor: pointer !important;
       user-select: none !important;
       transition: background-color 0.2s !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .reset-btn:active {
       background-color: #c62828 !important;
