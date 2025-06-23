@@ -232,6 +232,59 @@
       background: #ff9800;
       border-color: #ff5722;
     }
+
+    /* --- ここからレスポンシブ調整（iPadなど768～1024px） --- */
+    @media (max-width: 1024px) and (min-width: 768px) {
+      /* コントロールのボタン（＋−、キャンセル）を少し小さく */
+      .controls button,
+      .reset-btn {
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 1vw !important;
+      }
+
+      /* 数量表示の文字サイズ */
+      .controls span {
+        font-size: 1vw !important;
+      }
+
+      /* おやつ名のフォントサイズ */
+      .snack-name {
+        font-size: 0.9vw !important;
+      }
+
+      /* サイズ選択ボタン */
+      .size-button {
+        font-size: 0.6vw !important;
+        padding: 1px 4px !important;
+      }
+
+      /* 選択済みおやつの名前サイズ */
+      .selected-slot {
+        font-size: 1.1vw !important;
+      }
+      .selected-slot .calories {
+        font-size: 2vw !important;
+      }
+
+      /* 合計エネルギーのサイズ調整 */
+      #total {
+        font-size: 1.1vw !important;
+      }
+      #total .label {
+        font-size: 1vw !important;
+      }
+      #total strong {
+        font-size: 3vw !important;
+      }
+
+      /* 一括キャンセルボタン */
+      #reset-all {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 1vw !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -424,7 +477,7 @@
         const cal = size && snack.sizes ? snack.sizes[size] : snack.calories;
         total += cal * snack.count;
       });
-      document.getElementById('total').innerHTML =
+      document.querySelector('#total').innerHTML =
         `<span class="label">合計エネルギー：</span><strong>${total} kcal</strong>`;
     }
 
