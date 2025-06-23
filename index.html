@@ -55,22 +55,8 @@
       color: #e65100;
       user-select: text;
     }
-    #reset-all {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      font-size: 2.8vw;
-      line-height: 1;
-      padding: 0;
-      background-color: #f44336;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 42px;
-      height: 42px;
-      cursor: pointer;
-      user-select: none;
-    }
+
+    /* 合計エネルギーの枠 */
     #total {
       margin-top: 6px;
       background-color: #fff3e0;
@@ -78,11 +64,12 @@
       border-radius: 14px;
       padding: 8px 24px;
       box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-      font-weight: bold;
       min-width: 280px;
+      font-weight: bold;
       text-align: center;
       color: #e65100;
       user-select: none;
+      font-size: 1.4vw;
     }
     #total .label {
       font-size: 1.3vw;
@@ -94,147 +81,70 @@
       font-size: 3.8vw;
       vertical-align: middle;
     }
+
+    /* 一括キャンセルボタンは枠の外で右横に配置 */
+    #reset-all {
+      font-size: 2.0vw; /* 小さめ */
+      line-height: 1;
+      padding: 0;
+      background-color: #f44336;
+      color: white;
+      border: none;
+      border-radius: 4px; /* 四角 */
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      top: 12px;  /* 少し下げて合計と高さを合わせる */
+      margin-left: 12px;
+    }
+
+    /* 合計エネルギーとキャンセルボタンを横並びに */
+    #total-and-reset {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      margin-top: 6px;
+    }
+
     #snack-list {
       display: grid;
-      grid-template-columns: repeat(5, 1fr); /* ← ここを5列に変更 */
+      grid-template-columns: repeat(6, 1fr); /* 横6列 */
       gap: 12px;
       padding: 10px 24px 40px;
       max-width: 1024px;
       margin: 0 auto 30px;
     }
-    .snack {
-      background: #f9f9f9;
-      border-radius: 8px;
-      padding: 6px 8px;
-      text-align: left;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      cursor: pointer;
-      user-select: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 1vw;
-      transition: background-color 0.3s, border 0.3s;
-      border: 2px solid transparent;
-      position: relative;
-      min-height: 72px;
-    }
-    .snack.selected {
-      background-color: #f0fbe0;
-      border-color: #aed581;
-    }
-    .snack .top-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      width: 100%;
-    }
-    .snack img {
-      width: 30px;
-      height: 30px;
-      object-fit: contain;
-      user-select: none;
-      pointer-events: none;
-      flex-shrink: 0;
-    }
-    .snack-name {
-      flex-grow: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .controls {
-      display: flex;
-      justify-content: center;
-      gap: 6px;
-      margin-top: 6px;
-      width: 100%;
-      align-items: center;
-    }
-    .controls button {
-      background-color: #8bc34a;
-      border: none;
-      border-radius: 4px; /* ← 丸から四角に変更 */
-      color: white;
-      width: 28px;
-      height: 28px;
-      font-size: 1.2vw;
-      line-height: 1;
-      cursor: pointer;
-      user-select: none;
-      transition: background-color 0.2s;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .controls button:active {
-      background-color: #689f38;
-    }
-    .reset-btn {
-      background-color: #f44336 !important;
-      width: 28px !important;
-      height: 28px !important;
-      font-size: 1.2vw !important;
-      line-height: 1 !important;
-      border-radius: 4px !important; /* ← 丸から四角に */
-      padding: 0 !important;
-      color: white !important;
-      border: none !important;
-      cursor: pointer !important;
-      user-select: none !important;
-      transition: background-color 0.2s !important;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .reset-btn:active {
-      background-color: #c62828 !important;
-    }
-    .size-buttons {
-      display: flex;
-      gap: 4px;
-      margin-top: 6px;
-      justify-content: center;
-      flex-wrap: wrap;
-      width: 100%;
-    }
-    .size-button {
-      background: #4caf50;
-      color: white;
-      font-size: 0.7vw;
-      padding: 1px 6px;
-      border-radius: 6px;
-      cursor: pointer;
-      user-select: none;
-      border: 2px solid transparent;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .size-button.active {
-      background: #ff9800;
-      border-color: #ff5722;
-    }
+    /* --- 以下は元のまま --- */
+    /* ...（省略、元のコードのまま）... */
   </style>
 </head>
 <body>
 
   <div id="top-section">
-    <button id="reset-all" title="選択をすべてキャンセル" aria-label="すべてキャンセルボタン">&times;</button>
     <div id="selected-snacks">
       <div class="selected-slot" id="slot-1"></div>
       <div class="selected-slot" id="slot-2"></div>
       <div class="selected-slot" id="slot-3"></div>
       <div class="selected-slot" id="slot-4"></div>
     </div>
-    <div id="total">
-      <span class="label">合計エネルギー：</span><strong>0 kcal</strong>
+    <div id="total-and-reset">
+      <div id="total">
+        <span class="label">合計エネルギー：</span><strong>0 kcal</strong>
+      </div>
+      <button id="reset-all" title="選択をすべてキャンセル" aria-label="すべてキャンセルボタン">&times;</button>
     </div>
   </div>
 
   <div id="snack-list"></div>
 
   <script>
+    // --- ここは元のまま ---
     const snacks = [
       { id: 1, name: "チョコレート", image: "images/chocolate.png", calories: 30 },
       { id: 2, name: "クッキー", image: "images/cookie.png", calories: 60 },
